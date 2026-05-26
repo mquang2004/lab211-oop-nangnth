@@ -1,0 +1,36 @@
+package ui;
+
+import common.Constant;
+import controller.StudentController;
+import utils.InputData;
+import view.ViewStudent;
+
+public class J1LP0021Clone {
+    public static void main(String[] args) {
+        ViewStudent view = new ViewStudent();
+        StudentController controller = new StudentController();
+        InputData input = new InputData();
+        boolean loop = true;
+        while (loop) {
+            view.printMenu();
+            int choose = input.inputInteger("Your option: ", Constant.REG_MENU);
+            switch (choose) {
+                case 1:
+                    controller.createStudent();
+                    break;
+                case 2:
+                    controller.findAndSortStudent();
+                    break;
+                case 3:
+                    controller.updateOrDeleteStudent();
+                    break;
+                case 4:
+                    controller.getReport();
+                    break;
+                default:
+                    loop = false;
+                    break;
+            }
+        }
+    } 
+}
