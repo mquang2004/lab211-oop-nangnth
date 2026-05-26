@@ -12,18 +12,21 @@ public class InputData {
             if (number.matches(regex)) {
                 return Integer.parseInt(number);
             }
-            System.out.println("Please input valid integer.");
+            System.out.println("Invalid integer. Please enter again: ");
         }
     }
     
-    public int inputIntegerInRange(String mess, int start, int end){
-        System.out.println(mess);
+    public int inputIntegerInRange(String mess, String regex, int start, int end){
+        System.out.print(mess);
         while(true){
-            int number = SCANNER.nextInt();
-            if(number >= start & number <= end){
-                return number;
+            String string = SCANNER.nextLine().trim();
+            if(string.matches(regex)){
+                int number = Integer.parseInt(string);
+                if(number >= start && number <= end){
+                    return number;
+                }
             }
-            System.out.println("Please input valid integer.");
+            System.out.printf("Please input valid integer in range %d - %d: ", start, end);
         }
     }
 
@@ -34,7 +37,7 @@ public class InputData {
             if (string.matches(regex) && !string.matches("\\s*")) {
                 return string;
             }
-            System.out.println("Please input valid string.");
+            System.out.println("Please input valid string: ");
         }
     }
 }

@@ -14,7 +14,7 @@ public class Course {
     }
 
     public void setCourseName(String courseName) throws Exception {
-        if (courseName != null && courseName.trim().matches(Constant.REG_COURSE)) {
+        if (courseName != null && courseName.trim().matches(Constant.REG_COURSENAME)) {
             this.courseName = formatCourseName(courseName.trim());
         } else {
             throw new Exception("Course name is invalid.");

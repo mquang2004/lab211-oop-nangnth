@@ -30,20 +30,20 @@ public class StudentController {
             Student student;
 
             try {
-                id = inputData.inputString("Please enter student id: ", Constant.REG_ID);
+                id = inputData.inputString("Please enter student id: ", Constant.REG_STUDENTID);
                 if (studentManager.isIdExisted(id)) {
                     ArrayList<Enrollment> listStudentById = studentManager.findStudentById(id);
                     viewStudent.displayMess("Student course registered as below: ");
                     viewStudent.displayEnrollments(listStudentById);
                     student = studentManager.findStudentInfoById(id);
                 } else {
-                    String studentName = inputData.inputString("Please enter student name: ", Constant.REG_NAME);
+                    String studentName = inputData.inputString("Please enter student name: ", Constant.REG_STUDENTNAME);
                     student = new Student(id, studentName);
                 }
 
                 while (true) {
                     semester = inputData.inputInteger("Please enter semester: ", Constant.REG_SEMESTER);
-                    courseName = inputData.inputString("Please enter course name: ", Constant.REG_COURSE);
+                    courseName = inputData.inputString("Please enter course name: ", Constant.REG_COURSENAME);
                     if (!studentManager.isCourseRegisteredInSemester(id, semester, courseName)) {
                         break;
                     }
@@ -59,24 +59,25 @@ public class StudentController {
     }
 
     public void findAndSortStudent() {
-        String name = inputData.inputString("Please enter student name: ", Constant.REG_NAME);
+        String name = inputData.inputString("Please enter student name: ", Constant.REG_STUDENTNAME);
         ArrayList<Enrollment> listStudentByName = studentManager.findStudentByName(name);
         viewStudent.displayEnrollments(listStudentByName);
     }
 
     public void updateOrDeleteStudent() {
         try {
-            String id = inputData.inputString("Please enter student id to update or delete: ", Constant.REG_ID);
-            ArrayList<Enrollment> listStudentById = studentManager.findStudentById(id);
-            if (!studentManager.isIdExisted(id)) {
+            String id = inputData.inputString("Please enter student id to update or delete: ", Constant.REG_STUDENTID);
+            ArrayList<Enrollment> listStudentEnrollmentById = studentManager.findStudentById(id);
+            if (listStudentEnrollmentById.isEmpty()) {
                 viewStudent.displayMess("Student is not exist.");
                 return;
             }
-            viewStudent.displayEnrollments(listStudentById);
+            viewStudent.displayMess("The data is as below:");
+            viewStudent.displayEnrollments(listStudentEnrollmentById);
 
             String option = inputData.inputString("Do you want to update (U) or delete (D) student. If user chooses U, the program allows user updating. Choose D for deleting student: ", Constant.REG_UD);
-            int index = inputData.inputIntegerInRange("Please enter index of student data: ", 1, listStudentById.size());
-            Enrollment enrollmentByIndex = listStudentById.get(index - 1);
+            int index = inputData.inputIntegerInRange("Please enter index of student data: ", Constant.REG_INDEX, 1, listStudentEnrollmentById.size());
+            Enrollment enrollmentByIndex = listStudentEnrollmentById.get(index - 1);
 
             if (option.equalsIgnoreCase("U")) {
                 updateEnrollment(id, enrollmentByIndex);
@@ -90,13 +91,13 @@ public class StudentController {
     }
 
     private void updateEnrollment(String id, Enrollment enrollmentByIndex) throws Exception {
-        String studentName = inputData.inputString("Please enter student name: ", Constant.REG_NAME);
+        String studentName = inputData.inputString("Please enter student name: ", Constant.REG_STUDENTNAME);
         int semester;
         String courseName;
 
         while (true) {
             semester = inputData.inputInteger("Please enter semester: ", Constant.REG_SEMESTER);
-            courseName = inputData.inputString("Please enter course name: ", Constant.REG_COURSE);
+            courseName = inputData.inputString("Please enter course name: ", Constant.REG_COURSENAME);
             if (!studentManager.isCourseRegisteredInSemester(id, semester, courseName, enrollmentByIndex)) {
                 break;
             }

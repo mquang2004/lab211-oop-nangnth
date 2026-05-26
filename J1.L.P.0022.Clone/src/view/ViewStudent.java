@@ -6,7 +6,7 @@ import model.Enrollment;
 public class ViewStudent {
     public void printMenu() {
         System.out.print("""      
-                           ---------------------------------------------------------
+                           -----------------------------------------------------------------------------------------------------
                            WELCOME TO STUDENT MANAGEMENT
                            1. Create
                            2. Find and Sort
@@ -14,7 +14,7 @@ public class ViewStudent {
                            4. Report
                            5. Exit
                            Please choose 1 to Create, 2 to Find and Sort, 3 to Update/Delete, 4 to Report and 5 to Exit program.
-                           ---------------------------------------------------------
+                           -----------------------------------------------------------------------------------------------------
                            """);
     }
 

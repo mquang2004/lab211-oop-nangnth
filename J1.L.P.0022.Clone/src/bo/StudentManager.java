@@ -57,17 +57,17 @@ public class StudentManager {
     }
 
     public ArrayList<String> getStudentReport() {
-        LinkedHashMap<String, Integer> report = new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> reportMap = new LinkedHashMap<>();
         for (Enrollment enrollment : listEnrollment) {
             String key = enrollment.getStudentId() + "|" + enrollment.getStudentName() + "|" + enrollment.getCourseName();
-            report.put(key, report.getOrDefault(key, 0) + 1);
+            reportMap.put(key, reportMap.getOrDefault(key, 0) + 1);
         }
 
-        ArrayList<String> result = new ArrayList<>();
-        for (Map.Entry<String, Integer> entry : report.entrySet()) {
-            result.add(entry.getKey() + "|" + entry.getValue());
+        ArrayList<String> reportList = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : reportMap.entrySet()) {
+            reportList.add(entry.getKey() + "|" + entry.getValue());
         }
-        return result;
+        return reportList;
     }
 
     public ArrayList<Enrollment> findStudentByName(String name) {
@@ -148,6 +148,6 @@ public class StudentManager {
         if (enrollment == null || newName == null) {
             throw new Exception("Enrollment is invalid.");
         }
-        return !enrollment.getStudentName().trim().equalsIgnoreCase(newName.trim());
+        return !enrollment.getStudentName().trim().equals(newName.trim());
     }
 }
