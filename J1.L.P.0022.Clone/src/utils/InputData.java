@@ -15,14 +15,14 @@ public class InputData {
             System.out.println("Invalid integer. Please enter again: ");
         }
     }
-    
-    public int inputIntegerInRange(String mess, String regex, int start, int end){
+
+    public int inputIntegerInRange(String mess, String regex, int start, int end) {
         System.out.print(mess);
-        while(true){
+        while (true) {
             String string = SCANNER.nextLine().trim();
-            if(string.matches(regex)){
+            if (string.matches(regex)) {
                 int number = Integer.parseInt(string);
-                if(number >= start && number <= end){
+                if (number >= start && number <= end) {
                     return number;
                 }
             }
@@ -30,11 +30,11 @@ public class InputData {
         }
     }
 
-    public String inputString(String mess, String regex) {
+    public String inputString(String mess, String regex, boolean allowEmpty) {
         System.out.print(mess);
         while (true) {
             String string = SCANNER.nextLine().trim();
-            if (string.matches(regex) && !string.matches("\\s*")) {
+            if ((allowEmpty && string.isEmpty()) || string.matches(regex)) {
                 return string;
             }
             System.out.println("Please input valid string: ");

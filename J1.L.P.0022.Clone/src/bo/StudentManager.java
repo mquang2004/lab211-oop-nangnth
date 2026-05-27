@@ -22,6 +22,9 @@ public class StudentManager {
         if (enrollment == null) {
             throw new Exception("Enrollment is invalid.");
         }
+        if (isCourseRegisteredInSemester(enrollment.getStudentId(), enrollment.getSemester(), enrollment.getCourseName())) {
+            throw new Exception("Student registered this course in this semester.");
+        }
         listEnrollment.add(enrollment);
     }
 
@@ -70,7 +73,10 @@ public class StudentManager {
         return reportList;
     }
 
-    public ArrayList<Enrollment> findStudentByName(String name) {
+    public ArrayList<Enrollment> findStudentByName(String name) throws Exception {
+        if(name == null){
+            throw new Exception("Name is invalid.");
+        }
         ArrayList<Enrollment> listStudentByName = new ArrayList<>();
         String key = name.toLowerCase().trim();
         for (Enrollment enrollment : listEnrollment) {
