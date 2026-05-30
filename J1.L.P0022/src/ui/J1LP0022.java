@@ -1,8 +1,8 @@
-package j1.l.p0022;
+package ui;
 
 import common.Constant;
 import controller.CandidateController;
-import view.InputData;
+import utils.InputData;
 import view.ViewCandidate;
 
 public class J1LP0022 {
@@ -11,10 +11,9 @@ public class J1LP0022 {
         ViewCandidate view = new ViewCandidate();
         CandidateController controller = new CandidateController();
         InputData input = new InputData();
-        boolean loop = true;
-        while (loop) {
+        while (true) {
             view.printMenu();
-            int choose = input.inputInteger("Your option:", Constant.REG_MENU);
+            int choose = input.inputInteger("Your option: ", Constant.REG_MENU);
             switch (choose) {
                 case 1:
                     controller.createExperience();
@@ -29,8 +28,7 @@ public class J1LP0022 {
                     controller.search();
                     break;
                 default:
-                    loop = false;
-                    break;
+                    return;
             }
         }
     }

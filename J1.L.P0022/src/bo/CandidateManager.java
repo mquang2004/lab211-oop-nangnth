@@ -1,9 +1,10 @@
-package business;
+package bo;
 
+import java.time.Year;
 import java.util.ArrayList;
 import model.Candidate;
 
-public class CandidateBusiness {
+public class CandidateManager {
     private final ArrayList<Candidate> candidates = new ArrayList<>();
 
     public void addCandidate(Candidate candidate) throws Exception {
@@ -30,11 +31,19 @@ public class CandidateBusiness {
         return result;
     }
 
-    private boolean isDuplicateId(String id) {
+    public boolean isDuplicateId(String id) {
         for (Candidate candidate : candidates) {
-            if (candidate.getId().equalsIgnoreCase(id)) {
+            if (candidate.getId().equalsIgnoreCase(id.trim())) {
                 return true;
             }
+        }
+        return false;
+    }
+    
+    public boolean isBirthDateValid(int birthDate){
+        int currentYear = Year.now().getValue();
+        if(birthDate >= 1900 && birthDate <= currentYear){
+            return true;
         }
         return false;
     }

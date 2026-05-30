@@ -5,7 +5,7 @@ import model.Candidate;
 
 public class ViewCandidate {
     public void printMenu() {
-        System.out.println("""
+        System.out.print("""
                            CANDIDATE MANAGEMENT SYSTEM
                            1. Experience
                            2. Fresher
