@@ -1,6 +1,7 @@
 package model;
 
 import common.Constant;
+import java.time.Year;
 
 public class Fresher extends Candidate {
     private int graduationDate;
@@ -21,7 +22,8 @@ public class Fresher extends Candidate {
     }
 
     public void setGraduationDate(int graduationDate) throws Exception {
-        if (graduationDate >= 1900) {
+        int currentYear = Year.now().getValue();
+        if (graduationDate >= 1900 && graduationDate <= currentYear) {
             this.graduationDate = graduationDate;
         } else {
             throw new Exception("Graduation date is invalid.");

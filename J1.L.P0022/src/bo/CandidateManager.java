@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import model.Candidate;
 
 public class CandidateManager {
-    private final ArrayList<Candidate> candidates = new ArrayList<>();
+    private final ArrayList<Candidate> candidateList;
+    
+    public CandidateManager(){
+        candidateList = new ArrayList<>();
+    }
 
     public void addCandidate(Candidate candidate) throws Exception {
         if (candidate == null) {
@@ -14,16 +18,16 @@ public class CandidateManager {
         if (isDuplicateId(candidate.getId())) {
             throw new Exception("Candidate id is existed.");
         }
-        candidates.add(candidate);
+        candidateList.add(candidate);
     }
 
     public ArrayList<Candidate> getCandidates() {
-        return new ArrayList<>(candidates);
+        return new ArrayList<>(candidateList);
     }
 
     public ArrayList<Candidate> search(String name, int type) {
         ArrayList<Candidate> result = new ArrayList<>();
-        for (Candidate candidate : candidates) {
+        for (Candidate candidate : candidateList) {
             if (candidate.getType() == type && candidate.matchName(name)) {
                 result.add(candidate);
             }
@@ -32,7 +36,7 @@ public class CandidateManager {
     }
 
     public boolean isDuplicateId(String id) {
-        for (Candidate candidate : candidates) {
+        for (Candidate candidate : candidateList) {
             if (candidate.getId().equalsIgnoreCase(id.trim())) {
                 return true;
             }

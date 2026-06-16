@@ -11,7 +11,6 @@ import utils.InputData;
 import view.ViewCandidate;
 
 public class CandidateController {
-
     private final CandidateManager candidateManager = new CandidateManager();
     private final InputData inputData = new InputData();
     private final ViewCandidate viewCandidate = new ViewCandidate();
@@ -54,6 +53,9 @@ public class CandidateController {
                 viewCandidate.displayCandidateNames(candidateManager.getCandidates());
                 return;
             }
+            
+            viewCandidate.printMenu();
+            type = inputData.inputInteger("Your option: ", Constant.REG_MENU);
         }
     }
 
