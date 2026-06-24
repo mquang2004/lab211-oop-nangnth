@@ -1,5 +1,7 @@
 package model;
 
+import java.time.Year;
+
 public class Experience extends Candidate {
     private int expInYear;
     private String proSkill;
@@ -16,6 +18,8 @@ public class Experience extends Candidate {
     }
 
     public void setExpInYear(int expInYear) throws Exception {
+        int currentYear = Year.now().getValue();
+        int age = currentYear - getBirthDate();
         if (expInYear >= 0 && expInYear <= 100) {
             this.expInYear = expInYear;
         } else {

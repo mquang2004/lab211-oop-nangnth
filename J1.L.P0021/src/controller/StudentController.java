@@ -1,90 +1,122 @@
 package controller;
 
-import business.StudentBusiness;
+import bo.StudentManager;
 import common.Constant;
 import java.util.ArrayList;
+import model.Course;
+import model.Enrollment;
 import model.Student;
-import view.InputData;
+import utils.InputData;
 import view.ViewStudent;
 
 public class StudentController {
-    private final StudentBusiness studentBusiness = new StudentBusiness();
+
+    private final StudentManager studentManager = new StudentManager();
     private final InputData inputData = new InputData();
     private final ViewStudent viewStudent = new ViewStudent();
 
     public void createStudent() {
         while (true) {
-            if (studentBusiness.getSize() >= 10) {
-                String choose = inputData.inputString("Do you want to continue (Y/N)?", Constant.REG_YN);
-                if (choose.equalsIgnoreCase("N")) {
+            if (studentManager.getSize() >= 1) {
+                String option = inputData.inputString("Do you want to continue (Y/N)? Choose Y to continue, N to return main screen: ", Constant.REG_YN);
+                if (option.equalsIgnoreCase("N")) {
                     return;
                 }
             }
 
+            String id;
+            String courseName;
+            int semester;
+            Student student;
+
             try {
-                Student student = inputStudent();
-                studentBusiness.addStudent(student);
-                viewStudent.displayMess("Information of student has been added.");
+                id = inputData.inputString("Please enter student id: ", Constant.REG_STUDENTID);
+                if (studentManager.isIdExisted(id)) {
+                    ArrayList<Enrollment> listStudentById = studentManager.findStudentById(id);
+                    viewStudent.displayMess("Student course registered as below: ");
+                    viewStudent.displayEnrollments(listStudentById);
+                    student = studentManager.findStudentInfoById(id);
+                } else {
+                    String studentName = inputData.inputString("Please enter student name: ", Constant.REG_STUDENTNAME);
+                    student = new Student(id, studentName);
+                }
+
+                while (true) {
+                    semester = inputData.inputInteger("Please enter semester: ", Constant.REG_SEMESTER);
+                    courseName = inputData.inputString("Please enter course name: ", Constant.REG_COURSENAME);
+                    if (!studentManager.isCourseRegisteredInSemester(id, semester, courseName)) {
+                        break;
+                    }
+                    viewStudent.displayMess("Student registered this course in this semester, enter again.");
+                }
+
+                studentManager.addEnrollment(new Enrollment(student, semester, new Course(courseName)));
+                viewStudent.displayMess("Student added successfully.");
             } catch (Exception e) {
                 viewStudent.displayMess(e.getMessage());
             }
-
-            if (studentBusiness.getSize() < 10) {
-                viewStudent.displayMess("You need to create at least 10 students.");
-            }
         }
     }
 
-    public void findAndSort() {
-        String name = inputData.inputString("Enter student name:", Constant.REG_NAME);
-        ArrayList<Student> result = studentBusiness.findByName(name);
-        viewStudent.displayStudents(result);
-    }
-
-    public void updateOrDelete() {
-        String id = inputData.inputString("Enter student id:", Constant.REG_ID);
-        ArrayList<Student> result = studentBusiness.findById(id);
-        if (result.isEmpty()) {
-            viewStudent.displayMess("Student is not exist.");
-            return;
-        }
-
-        viewStudent.displayStudents(result);
-        int index = 0;
-        if (result.size() > 1) {
-            while (true) {
-                index = inputData.inputInteger("Choose student:", Constant.REG_SEMESTER) - 1;
-                if (index >= 0 && index < result.size()) {
-                    break;
-                }
-                viewStudent.displayMess("Please choose from 1 to " + result.size() + ".");
-            }
-        }
-        Student selectedStudent = result.get(index);
-        String choose = inputData.inputString("Do you want to update (U) or delete (D) student?", Constant.REG_UD);
+    public void findAndSortStudent() {
         try {
-            if (choose.equalsIgnoreCase("U")) {
-                Student newStudent = inputStudent();
-                studentBusiness.updateStudent(selectedStudent, newStudent);
-                viewStudent.displayMess("Information of student has been updated.");
+            String name = inputData.inputString("Please enter student name: ", Constant.REG_STUDENTNAME, true);
+            ArrayList<Enrollment> listStudentByName = studentManager.findStudentByName(name);
+            viewStudent.displayEnrollments(listStudentByName);
+        } catch (Exception e) {
+            viewStudent.displayMess(e.getMessage());
+        }
+    }
+
+    public void updateOrDeleteStudent() {
+        try {
+            String id = inputData.inputString("Please enter student id to update or delete: ", Constant.REG_STUDENTID);
+            ArrayList<Enrollment> listStudentEnrollmentById = studentManager.findStudentById(id);
+            if (listStudentEnrollmentById.isEmpty()) {
+                viewStudent.displayMess("Student is not exist.");
+                return;
+            }
+            viewStudent.displayMess("The data is as below:");
+            viewStudent.displayEnrollments(listStudentEnrollmentById);
+
+            String option = inputData.inputString("Do you want to update (U) or delete (D) student. If user chooses U, the program allows user updating. Choose D for deleting student: ", Constant.REG_UD);
+            int index = inputData.inputIntegerInRange("Please enter index of student data: ", Constant.REG_INDEX, 1, listStudentEnrollmentById.size());
+            Enrollment enrollmentByIndex = listStudentEnrollmentById.get(index - 1);
+
+            if (option.equalsIgnoreCase("U")) {
+                updateEnrollment(id, enrollmentByIndex);
             } else {
-                studentBusiness.deleteStudent(selectedStudent);
-                viewStudent.displayMess("Information of student has been deleted.");
+                studentManager.deleteEnrollment(enrollmentByIndex);
+                viewStudent.displayMess("Student has been deleted.");
             }
         } catch (Exception e) {
             viewStudent.displayMess(e.getMessage());
         }
     }
 
-    public void report() {
-        viewStudent.displayReport(studentBusiness.getReport());
+    private void updateEnrollment(String id, Enrollment enrollmentByIndex) throws Exception {
+        String studentName = inputData.inputString("Please enter student name: ", Constant.REG_STUDENTNAME);
+        int semester;
+        String courseName;
+
+        while (true) {
+            semester = inputData.inputInteger("Please enter semester: ", Constant.REG_SEMESTER);
+            courseName = inputData.inputString("Please enter course name: ", Constant.REG_COURSENAME);
+            if (!studentManager.isCourseRegisteredInSemester(id, semester, courseName, enrollmentByIndex)) {
+                break;
+            }
+            viewStudent.displayMess("Student registered this course in this semester, enter again.");
+        }
+
+        if (studentManager.isStudentNameChanged(enrollmentByIndex, studentName)) {
+            studentManager.updateStudentNameById(id, studentName);
+        }
+        studentManager.updateEnrollment(enrollmentByIndex, new Enrollment(enrollmentByIndex.getStudent(), semester, new Course(courseName)));
+        viewStudent.displayMess("Information of student has been updated.");
     }
 
-    private Student inputStudent() throws Exception {
-        String id = inputData.inputString("Enter student id:", Constant.REG_ID);
-        String name = inputData.inputString("Enter student name:", Constant.REG_NAME);
-        int semester = inputData.inputInteger("Enter semester:", Constant.REG_SEMESTER);
-        String course = inputData.inputString("Enter course name (Java, .Net, C/C++):", Constant.REG_COURSE);
-        return new Student(id, name, semester, course);
+    public void getReport() {
+        viewStudent.displayMess("The report as below: ");
+        viewStudent.displayReport(studentManager.getStudentReport());
     }
 }

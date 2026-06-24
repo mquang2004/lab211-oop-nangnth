@@ -12,7 +12,7 @@ public class InputData {
             if (number.matches(regex)) {
                 return Integer.parseInt(number);
             }
-            System.out.println("Invalid integer. Please enter again: ");
+            System.out.print("Invalid integer. Please enter again: ");
         }
     }
 
@@ -30,14 +30,25 @@ public class InputData {
         }
     }
 
-    public String inputString(String mess, String regex, boolean allowEmpty) {
+    public String inputString(String mess, String regex) {
+        System.out.print(mess);
+        while (true) {
+            String string = SCANNER.nextLine().trim();
+            if (string.matches(regex)) {
+                return string;
+            }
+            System.out.print("Please input valid string.");
+        }
+    }
+    
+    public String inputString(String mess, String regex, boolean allowEmpty){
         System.out.print(mess);
         while (true) {
             String string = SCANNER.nextLine().trim();
             if ((allowEmpty && string.isEmpty()) || string.matches(regex)) {
                 return string;
             }
-            System.out.println("Please input valid string: ");
+            System.out.print("Invalid string. Please enter again.");
         }
     }
 }
