@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.util.Date;
@@ -13,6 +9,12 @@ public class Expense {
     private String content;
 
     public Expense() {
+    }
+    
+    public Expense(Date date, double number, String content) {
+        setDate(date);
+        setNumber(number);
+        setContent(content);
     }
 
     public Expense(int id, Date date, double number, String content) {

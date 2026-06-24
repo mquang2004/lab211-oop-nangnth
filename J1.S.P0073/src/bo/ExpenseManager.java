@@ -2,10 +2,10 @@ package bo;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import model.Expense;
 
 public class ExpenseManager {
+
     private final ArrayList<Expense> expenseList;
     private int expenseId = 1;
 
@@ -20,22 +20,22 @@ public class ExpenseManager {
     public ArrayList<Expense> getExpenses() {
         return new ArrayList<>(expenseList);
     }
-    
-    public void addExpense(Expense expense) throws Exception{
-        if(expense == null){
+
+    public void addExpense(Expense expense) throws Exception {
+        if (expense == null) {
             throw new Exception("Expense is invalid.");
         }
-        if(isIdExisted(expense.getId())){
+        if (isIdExisted(expense.getId())) {
             throw new Exception("Id is existed.");
         }
-        
+
         expense.setId(expenseId++);
         expenseList.add(expense);
     }
-    
-    public boolean isIdExisted(int id){
+
+    public boolean isIdExisted(int id) {
         for (Expense expense : expenseList) {
-            if(expense.getId() == id){
+            if (expense.getId() == id) {
                 return true;
             }
         }
@@ -53,7 +53,7 @@ public class ExpenseManager {
 
     public void deleteExpense(int id) throws Exception {
         Expense expense = findExpenseById(id);
-        if(!isIdExisted(id)){
+        if (!isIdExisted(id)) {
             throw new Exception("Expense is not exist.");
         }
         expenseList.remove(expense);
@@ -68,5 +68,19 @@ public class ExpenseManager {
             total += expense.getNumber();
         }
         return total;
+    }
+
+    public int countDuplicate(Date date, double amount, String content) {
+        int count = 0;
+
+        for (Expense expense : expenseList) {
+            if (expense.getDate().equals(date)
+                    && expense.getNumber() == amount
+                    && expense.getContent().equalsIgnoreCase(content)) {
+                count++;
+            }
+        }
+
+        return count;
     }
 }

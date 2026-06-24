@@ -14,4 +14,5 @@ public class Constant {
     public static final String REG_DATE = "\\d{2}-\\d{2}-\\d{4}";
     public static final String REG_AMOUNT = "([1-9]\\d*)(\\.\\d+)?|0\\.\\d*[1-9]\\d*";
     public static final String REG_CONTENT = ".*\\S.*";
+    public static final String REG_YN = "(?i)[YN]";
 }
