@@ -7,7 +7,7 @@ Thực hành lập trình OOP - NangNTH
 Repo này chứa các project sau:
 
 - J1.L.P0021: Student Management (175 locs)
-- J1.L.P0022: QCandidate Management (175 locs)
+- J1.L.P0022: Candidate Management (175 locs)
 - J1.S.P0070: EBank System (150 locs)
 - J1.S.P0071: Task Management (150 locs)
 - J1.S.P0073: Expense Management (100 locs)
