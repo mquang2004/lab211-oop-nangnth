@@ -1,7 +1,6 @@
 package common;
 
 public class Constant {
-
     public static final String REG_MENU = "[1-4]";
     public static final String REG_ID = "[1-9][0-9]*";
     public static final String REG_TASK_TYPE = "[1-4]";

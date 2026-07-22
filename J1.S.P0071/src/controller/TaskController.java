@@ -3,7 +3,6 @@ package controller;
 import bo.TaskManager;
 import common.Constant;
 import java.util.ArrayList;
-import java.util.Date;
 import model.Task;
 import utils.InputData;
 import view.ViewTask;
@@ -19,15 +18,33 @@ public class TaskController {
             try {
                 viewTask.displayMess("------------Add Task---------------");
                 String requirementName = inputData.getString("Requirement Name: ", Constant.REG_TEXT);
-                int taskTypeId = inputData.inputInteger("Task Type: ", Constant.REG_TASK_TYPE);
-                Date date = inputData.getDate("Date: ", Constant.REG_DATE);
-                double planFrom = inputData.inputDouble("From: ", Constant.REG_PLAN_TIME);
-                double planTo = inputData.inputDouble("To: ", Constant.REG_PLAN_TIME);
+                String taskTypeId = inputData.getString("Task Type: ", Constant.REG_TASK_TYPE);
+                String date = inputData.getString("Date: ", Constant.REG_DATE);
+                ArrayList<Task> tasksInDay = taskManager.getTasksByDate(date);
+                if (!tasksInDay.isEmpty()) {
+                    viewTask.displayTasksInDay(tasksInDay);
+                }
+
+                String planFrom;
+                String planTo;
+                while (true) {
+                    try {
+                        planFrom = inputData.getString("From: ", Constant.REG_PLAN_TIME);
+                        planTo = inputData.getString("To: ", Constant.REG_PLAN_TIME);
+                        if (taskManager.isTaskTimeOverlapInDay(date, planFrom, planTo)) {
+                            viewTask.displayMess("Task time is overlapped.");
+                            continue;
+                        }
+                        break;
+                    } catch (Exception e) {
+                        viewTask.displayMess(e.getMessage());
+                    }
+                }
                 String assignee = inputData.getString("Assignee: ", Constant.REG_TEXT);
                 String reviewer = inputData.getString("Reviewer: ", Constant.REG_TEXT);
 
-                taskManager.addTask(new Task(taskTypeId, requirementName, date, planFrom, planTo, assignee, reviewer));
-                viewTask.displayMess("Add task successfully.");
+                int id = taskManager.addTask(requirementName, assignee, reviewer, taskTypeId, date, planFrom, planTo);
+                viewTask.displayMess("Add task successfully. ID: " + id);
                 break;
             } catch (Exception e) {
                 viewTask.displayMess(e.getMessage());
@@ -44,7 +61,7 @@ public class TaskController {
             }
 
             viewTask.displayMess("---------Del Task------");
-            int id = inputData.inputInteger("ID: ", Constant.REG_ID);
+            String id = inputData.getString("ID: ", Constant.REG_ID);
             taskManager.deleteTask(id);
             viewTask.displayMess("Task deleted successfully.");
         } catch (Exception e) {

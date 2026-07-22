@@ -36,12 +36,34 @@ public class ViewTask {
         System.out.printf("%-5s %-20s %-12s %-12s %-8s %-12s %-12s%n",
                 "ID", "Name", "Task Type", "Date", "Time", "Assignee", "Reviewer");
         for (Task task : list) {
-            System.out.printf("%-5d %-20s %-12s %-12s %-8s %-12s %-12s%n",
+            System.out.printf("%-5s %-20s %-12s %-12s %-8s %-12s %-12s%n",
                     task.getId(),
                     task.getName(),
                     taskManager.getTaskTypeName(task.getTaskTypeId()),
                     formatter.format(task.getDate()),
                     formatTime(task.getPlanTo() - task.getPlanFrom()),
+                    task.getAssignee(),
+                    task.getReviewer());
+        }
+    }
+
+    public void displayTasksInDay(List<Task> list) {
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        System.out.println("------------------------------- Tasks in selected date -------------------------------");
+        System.out.printf("%-5s %-20s %-12s %-12s %-10s %-10s %-12s %-12s%n",
+                "ID", "Name", "Task Type", "Date", "Plan From", "Plan To", "Assignee", "Reviewer");
+        for (Task task : list) {
+            System.out.printf("%-5s %-20s %-12s %-12s %-10s %-10s %-12s %-12s%n",
+                    task.getId(),
+                    task.getName(),
+                    taskManager.getTaskTypeName(task.getTaskTypeId()),
+                    formatter.format(task.getDate()),
+                    formatTime(task.getPlanFrom()),
+                    formatTime(task.getPlanTo()),
                     task.getAssignee(),
                     task.getReviewer());
         }

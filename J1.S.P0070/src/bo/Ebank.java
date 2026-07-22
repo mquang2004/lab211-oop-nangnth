@@ -39,7 +39,8 @@ public class Ebank {
         if (password != null
                 && password.matches(Constant.REG_PASSWORD_LENGTH)
                 && password.matches(Constant.REG_PASSWORD_LETTER)
-                && password.matches(Constant.REG_PASSWORD_DIGIT)) {
+                && password.matches(Constant.REG_PASSWORD_DIGIT)
+                && password.matches(Constant.REG_PASSWORD_NO_WHITESPACE)) {
             return "";
         }
         return getMessage("password.error");

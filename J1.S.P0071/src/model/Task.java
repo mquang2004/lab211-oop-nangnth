@@ -5,10 +5,11 @@
 package model;
 
 import java.util.Date;
+import common.Constant;
 
 public class Task {
-    private int id;
-    private int taskTypeId;
+    private String id;
+    private String taskTypeId;
     private String name;
     private Date date;
     private double planFrom;
@@ -17,9 +18,10 @@ public class Task {
     private String reviewer;
 
     public Task() {
+        
     }
 
-    public Task(int taskTypeId, String name, Date date, double planFrom, double planTo, String assignee, String reviewer) {
+    public Task(String taskTypeId, String name, Date date, double planFrom, double planTo, String assignee, String reviewer) {
         setTaskTypeId(taskTypeId);
         setName(name);
         setDate(date);
@@ -29,7 +31,7 @@ public class Task {
         setReviewer(reviewer);
     }
 
-    public Task(int id, int taskTypeId, String name, Date date, double planFrom, double planTo, String assignee, String reviewer) {
+    public Task(String id, String taskTypeId, String name, Date date, double planFrom, double planTo, String assignee, String reviewer) {
         setId(id);
         setTaskTypeId(taskTypeId);
         setName(name);
@@ -40,26 +42,26 @@ public class Task {
         setReviewer(reviewer);
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
-        if (id < 0) {
-            throw new IllegalArgumentException("Id must be greater than or equal to 0.");
+    public void setId(String id) {
+        if (id == null || !id.trim().matches(Constant.REG_ID)) {
+            throw new IllegalArgumentException("Id must be a positive integer.");
         }
-        this.id = id;
+        this.id = id.trim();
     }
 
-    public int getTaskTypeId() {
+    public String getTaskTypeId() {
         return taskTypeId;
     }
 
-    public void setTaskTypeId(int taskTypeId) {
-        if (taskTypeId < 1 || taskTypeId > 4) {
+    public void setTaskTypeId(String taskTypeId) {
+        if (taskTypeId == null || !taskTypeId.trim().matches("[1-4]")) {
             throw new IllegalArgumentException("Task type must be from 1 to 4.");
         }
-        this.taskTypeId = taskTypeId;
+        this.taskTypeId = taskTypeId.trim();
     }
 
     public String getName() {
